@@ -372,7 +372,7 @@
             <h4 style="color: var(--accent-color); margin-bottom: 8px; font-size: 0.95rem;">🌐 সোশ্যাল মিডিয়া ও চ্যাট বক্স কাস্টমাইজ</h4>
             
             <div class="input-group">
-                <label class="input-label">প্রথম চ্যাট বাটন নাম (যেমন: আমার সাথে চ্যাট):</label>
+                <label class="input-label">প্রথম চ্যাট বাটন নাম:</label>
                 <input type="text" id="admin1NameInput" class="input-field" placeholder="নাম লিখুন">
             </div>
             <div class="input-group">
@@ -381,7 +381,7 @@
             </div>
 
             <div class="input-group" style="margin-top: 10px;">
-                <label class="input-label">দ্বিতীয় চ্যাট বাটন নাম (যেমন: বন্ধুর সাথে চ্যাট):</label>
+                <label class="input-label">দ্বিতীয় চ্যাট বাটন নাম:</label>
                 <input type="text" id="admin2NameInput" class="input-field" placeholder="নাম লিখুন">
             </div>
             <div class="input-group">
@@ -495,7 +495,8 @@
 </div>
 
 <script>
-    const APP_DATA = {
+    // লোকাল স্টোরেজ থেকে ডেটা লোড করার সিস্টেম
+    let APP_DATA = JSON.parse(localStorage.getItem('picnic_app_data')) || {
         appTitle: "🌸 পিকনিক ফান্ডের হিসাব 🌸",
         generalPass: "1234",   
         githubPass: "9999",    
@@ -520,6 +521,10 @@
         ]
     };
 
+    function saveAppData() {
+        localStorage.setItem('picnic_app_data', JSON.stringify(APP_DATA));
+    }
+
     let activeMemberId = null;
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -528,7 +533,6 @@
         initDraggableChat();
     });
 
-    // ড্র্যাগ এবং ক্লিক হ্যান্ডেল সিস্টেম (মোবাইল ও পিসি সাপোর্টেড)
     function initDraggableChat() {
         const container = document.getElementById('draggableChat');
         const btn = document.getElementById('floatingBtn');
@@ -586,7 +590,6 @@
         btn.addEventListener('mousedown', dragStart);
         btn.addEventListener('touchstart', dragStart);
 
-        // ক্লিক বা ট্যাপ করলে পপআপ টেস্টিং
         btn.addEventListener('click', (e) => {
             if (!hasMoved) {
                 popup.classList.toggle('show');
@@ -649,9 +652,11 @@
     async function togglePasskey(enable) {
         if (enable) {
             APP_DATA.isPasskeyEnabled = true;
+            saveAppData();
             alert("✅ এই ডিভাইসের জন্য ফিঙ্গারপ্রিন্ট লক অন করা হয়েছে!");
         } else {
             APP_DATA.isPasskeyEnabled = false;
+            saveAppData();
             alert("🔓 ফিঙ্গারপ্রিন্ট লক বন্ধ করা হয়েছে।");
         }
     }
@@ -683,6 +688,7 @@
         if(link1) APP_DATA.admin1ChatLink = link1;
         if(link2) APP_DATA.admin2ChatLink = link2;
 
+        saveAppData();
         applyLinks();
         alert("✅ চ্যাট বক্স ও সোশ্যাল লিংক সফলভাবে সেভ করা হয়েছে!");
     }
@@ -736,6 +742,7 @@
         const member = APP_DATA.members.find(m => m.id === memberId);
         if(member) {
             member.name = newName;
+            saveAppData();
             updateDropdowns();
             renderMemberList();
             alert("✅ সদস্যের নাম সফলভাবে আপডেট করা হয়েছে!");
@@ -751,6 +758,7 @@
 
         const newId = Date.now();
         APP_DATA.members.push({ id: newId, name: name, history: [] });
+        saveAppData();
         document.getElementById('newMemberNameInput').value = '';
         updateDropdowns();
         alert(`✅ "${name}" সফলভাবে যুক্ত হয়েছে!`);
@@ -765,6 +773,7 @@
         }
         if(confirm("আপনি কি নিশ্চিতভাবে এই সদস্যকে ডিলিট করতে চান?")) {
             APP_DATA.members = APP_DATA.members.filter(m => m.id !== memberId);
+            saveAppData();
             updateDropdowns();
             alert("🗑️ সদস্য সফলভাবে ডিলিট করা হয়েছে!");
         }
@@ -787,6 +796,7 @@
         if(member) {
             const currentDate = new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
             member.history.push({ id: Date.now(), amount: amt, dateTime: currentDate });
+            saveAppData();
             document.getElementById('moneyInput').value = '';
             renderMemberDetail();
             alert("✅ সফলভাবে টাকা জমা হয়েছে!");
@@ -821,7 +831,7 @@ ${document.querySelector('.card').outerHTML}
 </div>
 <script>
     const APP_DATA = ${JSON.stringify(APP_DATA, null, 4)};
-    ${scriptContent.substring(scriptContent.indexOf("let activeMemberId"))}
+    ${scriptContent.substring(scriptContent.indexOf("function saveAppData"))}
 <\/script>
 </body>
 </html>`;
@@ -857,6 +867,7 @@ ${document.querySelector('.card').outerHTML}
         const gitP = document.getElementById('newGithubPass').value.trim();
         if(genP) APP_DATA.generalPass = genP;
         if(gitP) APP_DATA.githubPass = gitP;
+        saveAppData();
         document.getElementById('newGeneralPass').value = '';
         document.getElementById('newGithubPass').value = '';
         alert("✅ পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে!");
