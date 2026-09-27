@@ -3,1266 +3,931 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>চুদির ভাইয়ের মুদির দোকান - স্মার্ট খাতা</title>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>পিকনিক ফান্ডের হিসাব</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --theme-color: #ff0055;
-            --secondary-color: #00ffcc;
-            --bg-color: #05050a;
-            --grad-start: #ff0055;
-            --grad-end: #00ffcc;
-            --rgb-speed: 6s;
+            --bg-color: #050505;
+            --card-bg: #0a0a0c;
+            --border-color: #a800ff;
+            --text-color: #ffffff;
+            --accent-color: #00ffd5;
+            --highlight-color: #ff007f;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--secondary-color);
-            font-family: 'Courier Prime', monospace;
-            min-height: 100vh;
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
             padding: 15px;
-            overflow-x: hidden;
-            transition: background 0.3s;
         }
 
-        @keyframes pageEntry {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes rgbGlow {
-            0% { border-color: #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.4); color: #ff0055; }
-            25% { border-color: #00ffcc; box-shadow: 0 0 25px rgba(0, 255, 204, 0.4); color: #00ffcc; }
-            50% { border-color: #bc00ff; box-shadow: 0 0 25px rgba(188, 0, 255, 0.4); color: #bc00ff; }
-            75% { border-color: #ffff00; box-shadow: 0 0 25px rgba(255, 255, 0, 0.4); color: #ffff00; }
-            100% { border-color: #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.4); color: #ff0055; }
-        }
-
-        .main-container {
+        .card {
             width: 100%;
-            max-width: 680px;
-            background: rgba(10, 10, 20, 0.96);
-            border: 3px solid var(--theme-color);
-            border-radius: 14px;
-            padding: 25px;
-            box-shadow: 0 0 20px var(--theme-color);
+            max-width: 420px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 15px var(--border-color), inset 0 0 10px rgba(168, 0, 255, 0.3);
             position: relative;
-            animation: pageEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transition: all 0.3s ease;
         }
 
-        .gradient-applied {
-            border-image: linear-gradient(135deg, var(--grad-start), var(--grad-end)) 1;
-            box-shadow: 0 0 25px var(--grad-start);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .rgb-active {
-            animation: rgbGlow var(--rgb-speed) infinite linear !important;
-        }
-
-        .header-tag {
-            font-size: 13px;
-            color: var(--theme-color);
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
-            padding-bottom: 10px;
+        }
+
+        .app-title {
+            color: var(--highlight-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--highlight-color);
+        }
+
+        .setting-icon-btn {
+            background: #15151e;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .grand-total {
+            background: #15151e;
+            border: 1px solid var(--accent-color);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffee00;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .member-list {
+            list-style: none;
+            max-height: 280px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .member-card {
+            background: #111118;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .member-info-name {
+            color: var(--accent-color);
+            font-size: 1.05rem;
+            font-weight: bold;
+        }
+
+        .member-info-total {
+            color: #ffee00;
+            font-weight: bold;
+        }
+
+        .social-footer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #222;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .social-icon.facebook { background: #1877f2; }
+        .social-icon.youtube { background: #ff0000; }
+        .social-icon.tiktok { background: #000000; border: 1px solid #ff0055; }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid var(--highlight-color);
+            color: var(--highlight-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .member-header {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .member-subtotal {
+            text-align: center;
+            color: #ffee00;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            color: var(--accent-color);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            background: #15151e;
+            border-left: 3px solid var(--highlight-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .shop-title {
-            text-align: center;
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px var(--theme-color);
-            position: relative;
-        }
-
-        .shop-title::before, .shop-title::after {
-            content: "🌸";
-            font-size: 14px;
-            margin: 0 8px;
-            animation: pulseFloral 2s infinite alternate;
-        }
-
-        @keyframes pulseFloral {
-            0% { transform: scale(1); opacity: 0.7; }
-            100% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .top-btns {
-            display: flex;
-            gap: 10px;
-        }
-
-        .top-btn {
-            background: rgba(255, 0, 85, 0.1);
-            border: 1px solid var(--theme-color);
-            color: var(--theme-color);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+        .history-date {
+            font-size: 0.8rem;
+            color: #aaa;
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .top-btn:hover {
-            background: var(--theme-color);
-            color: #fff;
-        }
-
-        .input-group {
-            margin-bottom: 14px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            color: var(--secondary-color);
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-family: 'Hind Siliguri', sans-serif;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            background: #090913;
-            border: 2px solid #7600bc;
-            color: #fff;
-            padding: 10px;
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: 14px;
-            outline: none;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
-        }
-
-        .row-inputs {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 10px;
-        }
-
-        .btn-exec {
-            width: 100%;
-            background: linear-gradient(135deg, var(--theme-color), var(--secondary-color), #7600bc);
-            background-size: 200% 200%;
-            color: #05050a;
-            border: none;
-            padding: 13px;
-            font-family: 'Courier Prime', monospace;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-            border-radius: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            margin-top: 5px;
-            box-shadow: 0 0 15px var(--theme-color);
-        }
-
-        .btn-exec:hover {
-            opacity: 0.9;
-        }
-
-        .success-box {
-            display: none;
-            margin-top: 15px;
-            background: rgba(0, 255, 204, 0.1);
-            border: 2px dashed var(--secondary-color);
+        .setting-box {
+            background: #111118;
             padding: 15px;
-            border-radius: 8px;
-            font-family: 'Hind Siliguri', sans-serif;
-            font-size: 14px;
-            color: #fff;
-            line-height: 1.6;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88);
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-        }
-
-        .modal-content {
-            background: #111;
-            border: 2px solid var(--theme-color);
-            padding: 20px;
             border-radius: 10px;
-            width: 92%;
-            max-width: 500px;
-            max-height: 82vh;
-            overflow-y: auto;
-            position: relative;
+            border: 1px solid #333;
+            margin-bottom: 15px;
         }
 
-        .ledger-item {
-            background: #1a1a2e;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            font-family: 'Hind Siliguri', sans-serif;
-            border-left: 3px solid var(--secondary-color);
-            position: relative;
+        .color-dots {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            justify-content: center;
         }
 
-        .btn-action {
-            background: var(--theme-color);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            font-family: 'Courier Prime', monospace;
-            font-size: 13px;
-            font-weight: bold;
+        .dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             cursor: pointer;
-            border-radius: 6px;
-            margin-top: 10px;
+            border: 2px solid #fff;
         }
 
-        .del-btn {
-            background: var(--theme-color);
-            color: #fff;
-            border: none;
-            padding: 4px 8px;
-            font-size: 11px;
-            border-radius: 4px;
-            cursor: pointer;
-            float: right;
+        /* ফ্লোটিং ড্র্যাগএবল চ্যাট উইজেট ডিজাইন */
+        .floating-chat-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            touch-action: none;
+            user-select: none;
         }
 
-        .green-text { color: var(--secondary-color); }
-
-        .switch-container {
+        .floating-btn {
+            width: 55px;
+            height: 55px;
+            background: var(--highlight-color);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: rgba(255,255,255,0.05);
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #333;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--theme-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-
-        .settings-page {
-            display: none;
-        }
-        .settings-page.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* রিয়েল ক্যালকুলেটর ডিজাইন */
-        .calculator-card {
-            background: #111;
-            border: 2px solid var(--secondary-color);
-            border-radius: 12px;
-            padding: 15px;
-            max-width: 340px;
-            margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-        }
-
-        .calc-display {
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: right;
-            margin-bottom: 12px;
-        }
-
-        .calc-history-preview {
-            font-size: 11px;
-            color: #888;
-            min-height: 15px;
-            word-break: break-all;
-        }
-
-        .calc-main-screen {
-            font-size: 26px;
+            justify-content: center;
             color: #fff;
-            font-weight: bold;
-            word-break: break-all;
-            margin-top: 4px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--highlight-color);
+            border: 2px solid #fff;
+            animation: pulse-glow 2s infinite;
         }
 
-        .calc-buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 0, 127, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 127, 0); }
+        }
+
+        .floating-popup {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 230px;
+            background: #111118;
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+            display: none;
+            flex-direction: column;
             gap: 8px;
         }
 
-        .calc-btn {
-            background: #1a1a2e;
-            color: #fff;
-            border: 1px solid #333;
-            padding: 14px 0;
-            font-size: 16px;
-            font-family: 'Courier Prime', monospace;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.2s;
+        .floating-popup.show {
+            display: flex;
         }
 
-        .calc-btn:hover {
-            background: #2a2a4e;
-        }
-
-        .calc-btn.operator {
-            background: rgba(255, 0, 85, 0.2);
-            color: var(--theme-color);
-            border-color: var(--theme-color);
-        }
-
-        .calc-btn.equals {
-            background: var(--secondary-color);
-            color: #05050a;
+        .popup-title {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            text-align: center;
             font-weight: bold;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 4px;
         }
 
-        .calc-btn.clear {
-            background: rgba(255, 255, 0, 0.1);
-            color: #ffff00;
-            border-color: #ffff00;
+        .popup-link-btn {
+            background: #1877f2;
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
+
+        .view { display: none; }
+        .view.active { display: block; }
     </style>
 </head>
 <body>
 
-<div class="main-container" id="mainCard">
-    <div class="header-tag">
-        <div class="top-btns">
-            <button class="top-btn" onclick="openSettingsModal()"><i class="fa-solid fa-gear"></i> সেটিং</button>
-            <button class="top-btn" style="border-color:#ffff00; color:#ffff00; background:rgba(255,255,0,0.1);" onclick="openCalculatorModal()"><i class="fa-solid fa-calculator"></i> ক্যালকুলেটর</button>
-        </div>
-        <div class="top-btns">
-            <button class="top-btn" style="border-color:var(--secondary-color); color:var(--secondary-color); background:rgba(0,255,204,0.1);" onclick="openHistoryModal()"><i class="fa-solid fa-book-open"></i> হিস্টরি খাতা</button>
+<div class="card">
+    <div class="top-bar">
+        <div class="app-title" id="displayAppTitle">🌸 পিকনিক ফান্ডের হিসাব 🌸</div>
+        <button class="setting-icon-btn" onclick="openSettingsGate()">⚙ সেটিং</button>
+    </div>
+
+    <!-- হোম পেজ -->
+    <div id="homePage" class="view active">
+        <div class="grand-total" id="grandTotalDisplay">সর্বমোট জমা: ৳ ০</div>
+        <ul class="member-list" id="memberList"></ul>
+
+        <div class="social-footer">
+            <a href="#" id="fbLink" target="_blank" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" id="ytLink" target="_blank" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+            <a href="#" id="ttLink" target="_blank" class="social-icon tiktok"><i class="fab fa-tiktok"></i></a>
         </div>
     </div>
 
-    <div class="shop-title" id="shopTitleText">চুদির ভাইয়ের মুদির দোকান</div>
-    
-    <div class="form-area" id="formArea">
-        <div class="input-group">
-            <label>👤 ক্রেতার নাম:</label>
-            <input type="text" id="customerName" placeholder="যেমন: রহিম ভাই">
+    <!-- সদস্যের বিস্তারিত পেজ -->
+    <div id="detailPage" class="view">
+        <button class="back-btn" onclick="showPage('homePage')">⬅ পেছনে যান</button>
+        <div class="member-header" id="currentMemberName">সদস্যের নাম</div>
+        <div class="member-subtotal" id="currentMemberTotal">মোট জমা: ৳ ০</div>
+        
+        <div id="memberHistoryList" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
+
+        <div style="background: #111118; padding: 12px; border-radius: 10px; border: 1px solid var(--highlight-color);">
+            <p style="font-size: 0.8rem; color: var(--highlight-color); margin-bottom: 8px; text-align: center;">🔒 টাকা জমা দিতে পাসওয়ার্ড বা ফিঙ্গারপ্রিন্ট দিন</p>
+            <div class="input-group">
+                <input type="number" id="moneyInput" class="input-field" placeholder="টাকার পরিমাণ">
+            </div>
+            <button class="action-btn" onclick="verifyAndAddMoney()" style="background: var(--accent-color); color: #000;">[ 💰 টাকা জমা করুন ]</button>
+        </div>
+    </div>
+
+    <!-- সেটিংস পাসওয়ার্ড গেটওয়ে -->
+    <div id="settingsGatePage" class="view">
+        <button class="back-btn" onclick="showPage('homePage')">⬅ পেছনে যান</button>
+        <div class="setting-box" style="text-align: center;">
+            <h4 style="color: var(--highlight-color); margin-bottom: 10px;">🔒 সেটিংসে প্রবেশ</h4>
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 12px;">পাসওয়ার্ড দিন অথবা ফিঙ্গারপ্রিন্ট ব্যবহার করুন</p>
+            <input type="password" id="gatePassInput" class="input-field" placeholder="পাসওয়ার্ড" style="margin-bottom: 10px; text-align: center;">
+            <button class="action-btn" onclick="verifySettingsPassword()" style="background: var(--highlight-color); color: #fff; margin-bottom: 8px;">[ পাসওয়ার্ড দিয়ে খুলুন ]</button>
+            <button class="action-btn" onclick="tryBiometricAuth(true)" style="background: var(--accent-color); color: #000;">[ 👆 ফিঙ্গারপ্রিন্ট দিয়ে খুলুন ]</button>
+        </div>
+    </div>
+
+    <!-- আসল সেটিংস পেজ -->
+    <div id="settingsPage" class="view">
+        <button class="back-btn" onclick="showPage('homePage')">⬅ পেছনে যান</button>
+        <h3 style="color: var(--accent-color); margin-bottom: 15px;">⚙ সেটিংস ও ম্যানেজমেন্ট</h3>
+
+        <!-- ১. সোশ্যাল মিডিয়া ও চ্যাট বক্স সেটিংস -->
+        <div class="setting-box" style="border: 1px solid var(--accent-color);">
+            <h4 style="color: var(--accent-color); margin-bottom: 8px; font-size: 0.95rem;">🌐 সোশ্যাল মিডিয়া ও চ্যাট বক্স কাস্টমাইজ</h4>
+            
+            <div class="input-group">
+                <label class="input-label">প্রথম চ্যাট বাটন নাম (যেমন: আমার সাথে চ্যাট):</label>
+                <input type="text" id="admin1NameInput" class="input-field" placeholder="নাম লিখুন">
+            </div>
+            <div class="input-group">
+                <label class="input-label">প্রথম মেসেঞ্জার লিংক:</label>
+                <input type="text" id="admin1LinkInput" class="input-field" placeholder="https://m.me/...">
+            </div>
+
+            <div class="input-group" style="margin-top: 10px;">
+                <label class="input-label">দ্বিতীয় চ্যাট বাটন নাম (যেমন: বন্ধুর সাথে চ্যাট):</label>
+                <input type="text" id="admin2NameInput" class="input-field" placeholder="নাম লিখুন">
+            </div>
+            <div class="input-group">
+                <label class="input-label">দ্বিতীয় মেসেঞ্জার লিংক:</label>
+                <input type="text" id="admin2LinkInput" class="input-field" placeholder="https://m.me/...">
+            </div>
+
+            <div class="input-group" style="margin-top: 10px;">
+                <label class="input-label">ফেসবুক প্রফাইল/পেইজ লিংক:</label>
+                <input type="text" id="fbLinkInput" class="input-field" placeholder="https://facebook.com/...">
+            </div>
+            <div class="input-group">
+                <label class="input-label">ইউটিউব চ্যানেল লিংক:</label>
+                <input type="text" id="ytLinkInput" class="input-field" placeholder="https://youtube.com/...">
+            </div>
+            <div class="input-group">
+                <label class="input-label">টিকটক প্রফাইল লিংক:</label>
+                <input type="text" id="ttLinkInput" class="input-field" placeholder="https://tiktok.com/...">
+            </div>
+            <button class="action-btn" onclick="saveSocialLinks()" style="background: var(--accent-color); color: #000;">[ চ্যাট ও সোশ্যাল লিংক সেভ করুন ]</button>
         </div>
 
-        <div class="input-group">
-            <label>🥬 কাঁচামাল বা পণ্যের নাম:</label>
-            <select id="itemCategory" onchange="onItemCategoryChange()">
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>⚖️ পরিমাণ ও একক:</label>
-            <div class="row-inputs">
-                <input type="number" id="itemQuantityNum" placeholder="পরিমাণ (যেমন: ২ বা ৫০০)" step="any" oninput="calculateAutoPrice()">
-                <select id="itemUnit" onchange="calculateAutoPrice()">
+        <!-- ২. মেম্বারদের নাম এডিট ও কাস্টমাইজেশন -->
+        <div class="setting-box">
+            <h4 style="color: var(--accent-color); margin-bottom: 10px; font-size: 0.95rem;">✏️ সদস্যের নাম কাস্টমাইজ (এডিট)</h4>
+            <div class="input-group">
+                <label class="input-label">সদস্য সিলেক্ট করুন:</label>
+                <select id="editMemberSelect" class="input-field" style="background:#000; color:#fff; padding:10px;" onchange="loadMemberNameForEdit()">
                 </select>
             </div>
-        </div>
-
-        <div class="input-group">
-            <label>💰 মোট টাকার পরিমাণ:</label>
-            <input type="number" id="itemAmount" placeholder="যেমন: 120">
-        </div>
-
-        <button class="btn-exec" onclick="verifyAndExecute(saveLedgerEntry)">[ 💾 হিসাব সেভ করুন ]</button>
-    </div>
-
-    <div class="success-box" id="successBox">
-        <p class="green-text" style="font-weight:bold; margin-bottom:5px;">✓ হিসাব সফলভাবে সেভ হয়েছে!</p>
-        <div id="savedDetails"></div>
-        <button class="btn-action" style="background:var(--secondary-color); color:#05050a; width:100%; margin-top:10px;" onclick="resetForm()">আরেকটি এন্ট্রি করুন</button>
-    </div>
-</div>
-
-<!-- রিয়েল ক্যালকুলেটর মোডাল -->
-<div class="modal" id="calculatorModal">
-    <div class="modal-content" style="max-width: 380px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h3 style="color: #ffff00; font-size: 14px;"><i class="fa-solid fa-calculator"></i> রিয়েল ক্যালকুলেটর ও হিস্টরি</h3>
-            <button onclick="closeModal('calculatorModal')" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-
-        <div class="calculator-card">
-            <div class="calc-display">
-                <div class="calc-history-preview" id="calcHistoryPreview">সর্বশেষ হিসাব দেখা যাবে</div>
-                <div class="calc-main-screen" id="calcScreen">0</div>
+            <div class="input-group">
+                <label class="input-label">নতুন নাম লিখুন:</label>
+                <input type="text" id="updatedMemberNameInput" class="input-field" placeholder="সদস্যের নতুন নাম">
             </div>
+            <button class="action-btn" onclick="updateMemberName()" style="background: var(--accent-color); color: #000;">[ সদস্যের নাম আপডেট করুন ]</button>
+        </div>
 
-            <div class="calc-buttons-grid">
-                <button class="calc-btn clear" onclick="calcClear()">AC</button>
-                <button class="calc-btn operator" onclick="calcAppend('%')">%</button>
-                <button class="calc-btn operator" onclick="calcAppend('/')">÷</button>
-                <button class="calc-btn operator" onclick="calcDelete()">⌫</button>
-
-                <button class="calc-btn" onclick="calcAppend('7')">7</button>
-                <button class="calc-btn" onclick="calcAppend('8')">8</button>
-                <button class="calc-btn" onclick="calcAppend('9')">9</button>
-                <button class="calc-btn operator" onclick="calcAppend('*')">×</button>
-
-                <button class="calc-btn" onclick="calcAppend('4')">4</button>
-                <button class="calc-btn" onclick="calcAppend('5')">5</button>
-                <button class="calc-btn" onclick="calcAppend('6')">6</button>
-                <button class="calc-btn operator" onclick="calcAppend('-')">-</button>
-
-                <button class="calc-btn" onclick="calcAppend('1')">1</button>
-                <button class="calc-btn" onclick="calcAppend('2')">2</button>
-                <button class="calc-btn" onclick="calcAppend('3')">3</button>
-                <button class="calc-btn operator" onclick="calcAppend('+')">+</button>
-
-                <button class="calc-btn" onclick="calcAppend('0')" style="grid-column: span 2;">0</button>
-                <button class="calc-btn" onclick="calcAppend('.')">.</button>
-                <button class="calc-btn equals" onclick="calcCalculate()">=</button>
+        <!-- ৩. ফিঙ্গারপ্রিন্ট / পাসকি (Passkey) লক -->
+        <div class="setting-box">
+            <h4 style="color: var(--accent-color); margin-bottom: 8px; font-size: 0.95rem;">👆 ফিঙ্গারপ্রিন্ট / পাসকি (Passkey) লক</h4>
+            <div style="display: flex; gap: 10px;">
+                <button class="action-btn" onclick="togglePasskey(true)" style="background: var(--accent-color); color: #000; flex:1;">[ পাসকি অন ]</button>
+                <button class="action-btn" onclick="togglePasskey(false)" style="background: #ff0055; color: #fff; flex:1;">[ পাসকি অফ ]</button>
             </div>
         </div>
 
-        <!-- ক্যালকুলেটর হিস্টরি প্যানেল (ডিলিট অপশনসহ) -->
-        <div style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <label style="color:#ffff00; font-size: 12px; margin: 0;"><i class="fa-solid fa-clock-rotate-left"></i> ক্যালকুলেটরের হিস্টরি:</label>
-                <button class="top-btn" style="font-size: 10px; padding: 2px 6px; border-color:#ff0055; color:#ff0055;" onclick="verifyAndExecute(deleteSelectedCalcHistory)">মার্ক করা ডিলিট</button>
+        <!-- ৪. নতুন সদস্য যোগ বা ডিলিট করুন -->
+        <div class="setting-box">
+            <h4 style="color: var(--accent-color); margin-bottom: 10px; font-size: 0.95rem;">👤 নতুন সদস্য যোগ বা ডিলিট</h4>
+            <div class="input-group">
+                <label class="input-label">নতুন সদস্যের নাম:</label>
+                <input type="text" id="newMemberNameInput" class="input-field" placeholder="সদস্যের নাম লিখুন">
             </div>
-            <div id="calcSavedHistoryList" style="max-height: 120px; overflow-y: auto; background: #090913; padding: 8px; border-radius: 6px; font-size: 12px;">
-                <p style="color: #666;">কোনো হিসাব নেই।</p>
+            <button class="action-btn" onclick="addNewMember()" style="background: var(--accent-color); color: #000; margin-bottom: 15px;">[ ➕ নতুন সদস্য যোগ করুন ]</button>
+
+            <div class="input-group">
+                <label class="input-label">ডিলিট করার জন্য সদস্য সিলেক্ট করুন:</label>
+                <select id="deleteMemberSelect" class="input-field" style="background:#000; color:#fff; padding:10px;">
+                </select>
             </div>
-            <div style="display: flex; gap: 5px; margin-top: 8px;">
-                <button class="btn-action" style="margin-top:0; flex:1; font-size:11px; padding:5px; background:#ff0055;" onclick="verifyAndExecute(clearAllCalcHistory)">সব হিস্টরি মুছুন</button>
+            <button class="action-btn" onclick="deleteSelectedMember()" style="background: #ff0055; color: #fff;">[ 🗑️ সদস্য ডিলিট করুন ]</button>
+        </div>
+
+        <!-- ৫. থিম কালার কাস্টমাইজেশন -->
+        <div class="setting-box">
+            <h4 style="color: var(--accent-color); margin-bottom: 10px; font-size: 0.95rem;">🎨 থিম কালার চুজ করুন</h4>
+            <div class="color-dots">
+                <div class="dot" style="background: #a800ff;" onclick="setTheme('#a800ff', '#ff007f')"></div>
+                <div class="dot" style="background: #00ffd5;" onclick="setTheme('#00ffd5', '#ff0055')"></div>
+                <div class="dot" style="background: #ffaa00;" onclick="setTheme('#ffaa00', '#00ffee')"></div>
+                <div class="dot" style="background: #ff0055;" onclick="setTheme('#ff0055', '#00ffcc')"></div>
             </div>
+        </div>
+
+        <!-- ৬. কোড কপি ও গিটহাব আপডেট -->
+        <div class="setting-box" style="border: 1px solid var(--highlight-color);">
+            <h4 style="color: var(--highlight-color); margin-bottom: 8px; font-size: 0.95rem;">🚀 লেটেস্ট কোড কপি ও আপডেট</h4>
+            <div class="input-group">
+                <input type="text" id="inputNewMember" class="input-field" placeholder="নোট বা অতিরিক্ত বিবরণ (ঐচ্ছিক)">
+            </div>
+            <button class="action-btn" onclick="copyAndSendMessenger()" style="background: #1877f2; color: #fff;">[ 💬 আপডেট কোড কপি করুন ]</button>
+            <button class="action-btn" onclick="verifyAndGoGithub()" style="background: var(--highlight-color); color: #fff;">[ 🌐 সরাসরি গিটহাবে যান ]</button>
+        </div>
+
+        <!-- ৭. পাসওয়ার্ড পরিবর্তন -->
+        <div class="setting-box">
+            <h4 style="color: var(--accent-color); margin-bottom: 10px; font-size: 0.95rem;">🔑 পাসওয়ার্ড পরিবর্তন</h4>
+            <div class="input-group">
+                <label class="input-label">নতুন সাধারণ পাসওয়ার্ড:</label>
+                <input type="password" id="newGeneralPass" class="input-field" placeholder="নতুন সাধারণ পাসওয়ার্ড">
+            </div>
+            <div class="input-group">
+                <label class="input-label">নতুন গিটহাব পাসওয়ার্ড:</label>
+                <input type="password" id="newGithubPass" class="input-field" placeholder="নতুন গিটহাব পাসওয়ার্ড">
+            </div>
+            <button class="action-btn" onclick="saveNewPasswords()" style="background: var(--accent-color); color: #000; margin-bottom:0;">[ পাসওয়ার্ড সেভ করুন ]</button>
         </div>
     </div>
 </div>
 
-<!-- হিস্টরি খাতা মোডাল -->
-<div class="modal" id="historyModal">
-    <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="color: var(--secondary-color); font-size: 15px;"><i class="fa-solid fa-book"></i> বিক্রয় ও বাকি হিস্টরি খাতা</h3>
-            <button onclick="closeModal('historyModal')" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div id="ledgerListContainer">
-            <p style="color: #888; font-size: 13px;">হিসাব খাতা খালি।</p>
-        </div>
-        <button class="btn-action" style="width:100%; margin-top:15px;" onclick="verifyAndExecute(clearAllLedger)">সব হিস্টরি মুছে ফেলুন</button>
+<!-- ফ্লোটিং ড্র্যাগএবল চ্যাট বক্স -->
+<div class="floating-chat-container" id="draggableChat">
+    <div class="floating-popup" id="floatingPopup">
+        <div class="popup-title">💬 সরাসরি যোগাযোগ করুন</div>
+        <a href="#" id="floatingAdmin1" target="_blank" class="popup-link-btn"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin1">আমার সাথে চ্যাট</span></a>
+        <a href="#" id="floatingAdmin2" target="_blank" class="popup-link-btn" style="background: #0084ff;"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin2">বন্ধুর সাথে চ্যাট</span></a>
     </div>
-</div>
-
-<!-- সেটিং মোডাল -->
-<div class="modal" id="settingsModal">
-    <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="color: var(--theme-color); font-size: 15px;"><i class="fa-solid fa-gear"></i> দোকান সেটিং ও কাস্টমাইজেশন</h3>
-            <button onclick="closeModal('settingsModal')" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        
-        <div class="switch-container">
-            <span style="font-size: 13px; font-family: 'Hind Siliguri', sans-serif; font-weight: bold; color: var(--secondary-color);">✨ কালার গ্রেডিং ও RGB স্পিড মোড</span>
-            <label class="switch">
-                <input type="checkbox" id="settingsPageSwitch" onchange="toggleSettingsPage(this.checked)">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div id="pageGeneralSettings" class="settings-page active">
-            <div class="input-group" style="background: rgba(255,255,0,0.05); border: 1px dashed #ffff00; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color:#ffff00;"><i class="fa-solid fa-triangle-exclamation"></i> সেভ ওয়ার্নিং মেসেজ কাস্টমাইজ করুন:</label>
-                <textarea id="warningMsgInput" rows="2" style="margin-bottom: 8px; font-size: 13px;" placeholder="ওয়ার্নিং টেক্সট লিখুন"></textarea>
-                <button class="btn-action" style="margin-top:0; width:100%; background:#ffff00; color:#05050a;" onclick="verifyAndExecute(saveCustomWarningMessage)">ওয়ার্নিং মেসেজ আপডেট করুন</button>
-            </div>
-
-            <div class="input-group" style="background: rgba(255,0,85,0.05); border: 1px dashed var(--theme-color); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color:var(--theme-color);">🔑 সিক্রেট পাসওয়ার্ড পরিবর্তন:</label>
-                <input type="password" id="oldPass" placeholder="বর্তমান পাসওয়ার্ড দিন" style="margin-bottom: 8px;">
-                <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড দিন" style="margin-bottom: 8px;">
-                <button class="btn-action" style="margin-top:0; width:100%;" onclick="verifyAndExecute(changePassword)">পাসওয়ার্ড আপডেট করুন</button>
-            </div>
-
-            <div class="input-group" style="background: rgba(0,255,204,0.05); border: 1px dashed var(--secondary-color); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color:var(--secondary-color);">👆 ফিঙ্গারপ্রিন্ট / ফেস লক সিকিউরিটি:</label>
-                <button class="btn-action" id="bioToggleBtn" style="margin-top:5px; width:100%; background:var(--secondary-color); color:#05050a;" onclick="verifyAndExecute(toggleBiometric)">ফিঙ্গারপ্রিন্ট লক অন করুন</button>
-            </div>
-
-            <div class="input-group" style="background: rgba(255,255,255,0.03); border: 1px dashed var(--secondary-color); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color:var(--secondary-color);">➕ নতুন পণ্য, ডিফল্ট দাম ও একক সেট করুন:</label>
-                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                    <input type="text" id="newItemName" placeholder="পণ্যের নাম (যেমন: ডিম)">
-                    <input type="number" id="newItemPrice" placeholder="দাম (৳)" style="width: 85px;">
-                </div>
-                <div style="margin-bottom: 8px;">
-                    <select id="newItemUnit">
-                        <option value="কেজি (Kg)">কেজি (Kg)</option>
-                        <option value="গ্রাম (Gram)">গ্রাম (Gram)</option>
-                        <option value="পোয়া (Poa)">পোয়া (২৫০ গ্রাম)</option>
-                        <option value="হালি (Hali)">হালি (৪ টি)</option>
-                        <option value="ডজন (Dozen)">ডজন (১২ টি)</option>
-                        <option value="পিস (Piece)">পিস</option>
-                        <option value="আটি (Bunch)">আটি (Bunch)</option>
-                    </select>
-                </div>
-                <button class="btn-action" style="margin-top:0; width:100%; background:var(--secondary-color); color:#05050a;" onclick="verifyAndExecute(addNewItemWithPrice)">পণ্য যোগ করুন</button>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <label>📋 বিদ্যমান পণ্যের দাম ও একক কাস্টমাইজ করুন:</label>
-                <div id="itemListContainer" style="max-height: 200px; overflow-y: auto; background: #1a1a2e; padding: 10px; border-radius: 6px; font-size: 13px;">
-                </div>
-            </div>
-        </div>
-
-        <div id="pageColorGrading" class="settings-page">
-            <div class="input-group" style="background: rgba(255,0,85,0.05); border: 1px dashed var(--theme-color); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color:var(--theme-color); margin-bottom: 10px;">🎨 কাস্টম কালার গ্রেডিং (Color Grading):</label>
-                
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                    <span style="font-size: 13px;">গ্রেড শুরু কালার:</span>
-                    <input type="color" id="gradStartPicker" value="#ff0055" style="width: 50px; height: 35px; border: none; cursor: pointer; background: none;" onchange="applyColorGrading()">
-                </div>
-
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-                    <span style="font-size: 13px;">গ্রেড শেষ কালার:</span>
-                    <input type="color" id="gradEndPicker" value="#00ffcc" style="width: 50px; height: 35px; border: none; cursor: pointer; background: none;" onchange="applyColorGrading()">
-                </div>
-
-                <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; margin-top: 10px;">
-                    <label style="color:var(--secondary-color); margin-bottom: 8px;">⚡ RGB অ্যানিমেশন স্পিড (গতি কমান/বাড়ান):</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="range" id="rgbSpeedRange" min="1" max="15" value="6" step="1" style="flex: 1; accent-color: var(--secondary-color); cursor: pointer;" oninput="updateRGBSpeed(this.value)">
-                        <span id="speedValueText" style="font-size: 12px; color: #fff;">6s</span>
-                    </div>
-                </div>
-
-                <button class="btn-action" id="rgbToggleBtn" style="margin-top:15px; width:100%; background:linear-gradient(90deg, red, green, blue);" onclick="toggleRGBMode()">RGB নিয়ন গ্লো মোড অন/অফ</button>
-                <button class="btn-action" style="width:100%; background:#444;" onclick="resetColorGrading()">ডিফল্ট কালার রিসেট</button>
-            </div>
-        </div>
-
+    <div class="floating-btn" id="floatingBtn">
+        <i class="fas fa-comment-dots"></i>
     </div>
 </div>
 
 <script>
-    function getPassword() {
-        return localStorage.getItem('app_password') || "1";
-    }
-
-    function isBiometricEnabled() {
-        return localStorage.getItem('bio_enabled') === "true";
-    }
-
-    function isRGBEnabled() {
-        return localStorage.getItem('rgb_enabled') === "true";
-    }
-
-    function getGradStart() {
-        return localStorage.getItem('grad_start') || "#ff0055";
-    }
-
-    function getGradEnd() {
-        return localStorage.getItem('grad_end') || "#00ffcc";
-    }
-
-    function getRGBSpeed() {
-        return localStorage.getItem('rgb_speed') || "6s";
-    }
-
-    function getWarningMessage() {
-        return localStorage.getItem('custom_warning_msg') || "⚠️ সাবধান! সমস্ত তথ্য বা হিসাব ঠিক আছে কিনা দয়া করে আরেকবার চেক করুন!";
-    }
-
-    let defaultInventory = {
-        "আলু (Potato)": { price: 40, unit: "কেজি (Kg)" },
-        "পেঁয়াজ (Onion)": { price: 70, unit: "কেজি (Kg)" },
-        "পটল (Pointed Gourd)": { price: 60, unit: "কেজি (Kg)" },
-        "বেগুন (Eggplant)": { price: 60, unit: "কেজি (Kg)" },
-        "টমেটো (Tomato)": { price: 80, unit: "কেজি (Kg)" },
-        "কাঁচা মরিচ (Green Chili)": { price: 120, unit: "কেজি (Kg)" },
-        "ডিম (Eggs)": { price: 55, unit: "হালি (Hali)" },
-        "কলমি শাক (Kolmi Shak)": { price: 15, unit: "আটি (Bunch)" },
-        "লাল শাক (Lal Shak)": { price: 15, unit: "আটি (Bunch)" },
-        "লেবু (Lemon)": { price: 10, unit: "পিস (Piece)" },
-        "ডাল ও তেল": { price: 150, unit: "কেজি (Kg)" }
+    const APP_DATA = {
+        appTitle: "🌸 পিকনিক ফান্ডের হিসাব 🌸",
+        generalPass: "1234",   
+        githubPass: "9999",    
+        isPasskeyEnabled: false,
+        admin1Name: "আমার সাথে চ্যাট",
+        admin2Name: "বন্ধুর সাথে চ্যাট",
+        admin1ChatLink: "https://m.me/md.musa.khan.122549",
+        admin2ChatLink: "https://m.me/",
+        messengerLink: "https://m.me/md.musa.khan.122549",
+        githubRepoLink: "https://github.com",
+        fbLink: "https://facebook.com",
+        ytLink: "https://youtube.com",
+        ttLink: "https://tiktok.com",
+        members: [
+            {
+                id: 1,
+                name: "Md Musa Khan",
+                history: [
+                    { id: 101, amount: 500, dateTime: "১ জুন ২০২৬" }
+                ]
+            }
+        ]
     };
 
-    function getInventory() {
-        let saved = localStorage.getItem('grocery_inventory_v2');
-        if (!saved) return defaultInventory;
-        let parsed = JSON.parse(saved);
-        for (let key in parsed) {
-            if (typeof parsed[key] !== 'object') {
-                parsed[key] = { price: parsed[key], unit: "কেজি (Kg)" };
-            }
-        }
-        return parsed;
-    }
+    let activeMemberId = null;
 
-    function populateItemsDropdown() {
-        const select = document.getElementById('itemCategory');
-        const inventory = getInventory();
-        select.innerHTML = "";
-        for (let item in inventory) {
-            let itemData = inventory[item];
-            let opt = document.createElement('option');
-            opt.value = item;
-            opt.innerText = `${item} (দর: ৳${itemData.price} / ${itemData.unit.split(' ')[0]})`;
-            select.appendChild(opt);
-        }
-        onItemCategoryChange();
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+        renderMemberList();
+        applyLinks();
+        initDraggableChat();
+    });
 
-    function onItemCategoryChange() {
-        const item = document.getElementById('itemCategory').value;
-        const unitSelect = document.getElementById('itemUnit');
-        const inventory = getInventory();
-        let itemData = inventory[item] || { price: 0, unit: "কেজি (Kg)" };
+    // ড্র্যাগ এবং ক্লিক হ্যান্ডেল সিস্টেম (মোবাইল ও পিসি সাপোর্টেড)
+    function initDraggableChat() {
+        const container = document.getElementById('draggableChat');
+        const btn = document.getElementById('floatingBtn');
+        const popup = document.getElementById('floatingPopup');
 
-        unitSelect.innerHTML = `
-            <option value="কেজি (Kg)">কেজি (Kg)</option>
-            <option value="গ্রাম (Gram)">গ্রাম (Gram)</option>
-            <option value="পোয়া (Poa)">পোয়া (২৫০ গ্রাম)</option>
-            <option value="হালি (Hali)">হালি (৪ টি)</option>
-            <option value="ডজন (Dozen)">ডজন (১২ টি)</option>
-            <option value="পিস (Piece)">পিস</option>
-            <option value="আটি (Bunch)">আটি (Bunch)</option>
-        `;
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+        let hasMoved = false;
 
-        for (let i = 0; i < unitSelect.options.length; i++) {
-            if (unitSelect.options[i].value === itemData.unit) {
-                unitSelect.selectedIndex = i;
-                break;
-            }
-        }
-        calculateAutoPrice();
-    }
-
-    window.onload = function() {
-        populateItemsDropdown();
-        applyThemeSettings();
-        updateBiometricButtonUI();
-        document.getElementById('warningMsgInput').value = getWarningMessage();
-        loadCalcHistory();
-    };
-
-    function applyThemeSettings() {
-        let startColor = getGradStart();
-        let endColor = getGradEnd();
-        let speed = getRGBSpeed();
-        
-        document.getElementById('gradStartPicker').value = startColor;
-        document.getElementById('gradEndPicker').value = endColor;
-        document.getElementById('rgbSpeedRange').value = parseInt(speed);
-        document.getElementById('speedValueText').innerText = speed;
-
-        document.documentElement.style.setProperty('--rgb-speed', speed);
-
-        let mainCard = document.getElementById('mainCard');
-        let shopTitle = document.getElementById('shopTitleText');
-
-        if (isRGBEnabled()) {
-            mainCard.classList.add('rgb-active');
-            mainCard.classList.remove('gradient-applied');
-            shopTitle.classList.remove('gradient-text');
-        } else {
-            mainCard.classList.remove('rgb-active');
-            document.documentElement.style.setProperty('--grad-start', startColor);
-            document.documentElement.style.setProperty('--grad-end', endColor);
-            mainCard.classList.add('gradient-applied');
-            shopTitle.classList.add('gradient-text');
-        }
-    }
-
-    function applyColorGrading() {
-        let startColor = document.getElementById('gradStartPicker').value;
-        let endColor = document.getElementById('gradEndPicker').value;
-        localStorage.setItem('grad_start', startColor);
-        localStorage.setItem('grad_end', endColor);
-        localStorage.setItem('rgb_enabled', "false");
-        applyThemeSettings();
-    }
-
-    function updateRGBSpeed(val) {
-        let speedStr = val + "s";
-        localStorage.setItem('rgb_speed', speedStr);
-        document.documentElement.style.setProperty('--rgb-speed', speedStr);
-        document.getElementById('speedValueText').innerText = speedStr;
-    }
-
-    function resetColorGrading() {
-        localStorage.setItem('grad_start', '#ff0055');
-        localStorage.setItem('grad_end', '#00ffcc');
-        localStorage.setItem('rgb_speed', '6s');
-        localStorage.setItem('rgb_enabled', 'false');
-        applyThemeSettings();
-        alert("কালার গ্রেডিং ও স্পিড ডিফল্ট করা হয়েছে!");
-    }
-
-    function toggleRGBMode() {
-        let current = isRGBEnabled();
-        localStorage.setItem('rgb_enabled', !current);
-        applyThemeSettings();
-        alert(!current ? "RGB নিয়ন গ্লো মোড চালু হয়েছে!" : "RGB নিয়ন মোড বন্ধ করা হয়েছে।");
-    }
-
-    function toggleSettingsPage(isColorGradingPage) {
-        let pageGen = document.getElementById('pageGeneralSettings');
-        let pageGrad = document.getElementById('pageColorGrading');
-        if (isColorGradingPage) {
-            pageGen.classList.remove('active');
-            pageGrad.classList.add('active');
-        } else {
-            pageGrad.classList.remove('active');
-            pageGen.classList.add('active');
-        }
-    }
-
-    function calculateAutoPrice() {
-        const item = document.getElementById('itemCategory').value;
-        const qtyNum = parseFloat(document.getElementById('itemQuantityNum').value) || 0;
-        const unit = document.getElementById('itemUnit').value;
-        const inventory = getInventory();
-        let itemData = inventory[item] || { price: 0, unit: "কেজি (Kg)" };
-        let unitPrice = itemData.price;
-        let baseUnit = itemData.unit;
-        let calculatedPrice = 0;
-
-        if (unit.includes('কেজি') || unit.includes('Kg')) {
-            if (baseUnit.includes('কেজি') || baseUnit.includes('Kg')) calculatedPrice = qtyNum * unitPrice;
-            else if (baseUnit.includes('গ্রাম')) calculatedPrice = (qtyNum * 1000) * unitPrice;
-        } else if (unit.includes('গ্রাম') || unit.includes('Gram')) {
-            if (baseUnit.includes('কেজি') || baseUnit.includes('Kg')) calculatedPrice = (qtyNum / 1000) * unitPrice;
-            else calculatedPrice = qtyNum * unitPrice;
-        } else if (unit.includes('পোয়া')) {
-            if (baseUnit.includes('কেজি') || baseUnit.includes('Kg')) calculatedPrice = (qtyNum * 0.25) * unitPrice;
-            else calculatedPrice = qtyNum * unitPrice;
-        } else if (unit.includes('হালি')) {
-            if (baseUnit.includes('হালি')) calculatedPrice = qtyNum * unitPrice;
-            else if (baseUnit.includes('পিস')) calculatedPrice = qtyNum * (unitPrice * 4);
-            else calculatedPrice = qtyNum * unitPrice;
-        } else if (unit.includes('ডজন')) {
-            if (baseUnit.includes('হালি')) calculatedPrice = qtyNum * (unitPrice * 3);
-            else if (baseUnit.includes('পিস')) calculatedPrice = qtyNum * (unitPrice * 12);
-            else calculatedPrice = qtyNum * unitPrice;
-        } else if (unit.includes('পিস')) {
-            if (baseUnit.includes('হালি')) calculatedPrice = qtyNum * (unitPrice / 4);
-            else calculatedPrice = qtyNum * unitPrice;
-        } else {
-            calculatedPrice = qtyNum * unitPrice;
-        }
-
-        if (calculatedPrice > 0) {
-            document.getElementById('itemAmount').value = Math.round(calculatedPrice);
-        }
-    }
-
-    async function verifyAndExecute(callback) {
-        let warningText = getWarningMessage();
-        let warningConfirmed = confirm("=====================================\n" + warningText + "\n=====================================\n\n'OK' বাটনে ক্লিক করে পাসওয়ার্ড/ফিঙ্গারপ্রিন্ট ভেরিফিকেশন সম্পন্ন করুন।");
-        if (!warningConfirmed) return;
-
-        let success = false;
-        if (isBiometricEnabled() && window.PublicKeyCredential) {
-            try {
-                const publicKey = {
-                    challenge: new Uint8Array([21, 31, 105, 75, 20]),
-                    rp: { name: "Chudir Bhai Grocery" },
-                    user: { id: new Uint8Array([1]), name: "shopkeeper", displayName: "Shop Owner" },
-                    pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-                    timeout: 60000,
-                    authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-                    attestation: "none"
-                };
-                await navigator.credentials.create({ publicKey });
-                success = true;
-            } catch (err) {
-                console.log("বায়োমেট্রিক স্কিপ করা হয়েছে।");
-            }
-        }
-
-        if (!success) {
-            let pass = prompt("সিকিউরিটি পাসওয়ার্ড দিন:");
-            if (pass === getPassword()) {
-                success = true;
-            } else if (pass !== null) {
-                alert("ভুল পাসওয়ার্ড!");
-            }
-        }
-
-        if (success) {
-            callback();
-        }
-    }
-
-    function saveCustomWarningMessage() {
-        let newMsg = document.getElementById('warningMsgInput').value.trim();
-        if(!newMsg) {
-            alert("ওয়ার্নিং মেসেজ খালি রাখা যাবে না!");
-            return;
-        }
-        localStorage.setItem('custom_warning_msg', newMsg);
-        alert("ওয়ার্নিং মেসেজ সফলভাবে আপডেট করা হয়েছে!");
-    }
-
-    function saveLedgerEntry() {
-        const cName = document.getElementById('customerName').value.trim();
-        const item = document.getElementById('itemCategory').value;
-        const qtyNum = document.getElementById('itemQuantityNum').value.trim();
-        const unit = document.getElementById('itemUnit').value;
-        const amount = document.getElementById('itemAmount').value.trim();
-
-        if(!cName || !qtyNum || !amount) {
-            alert("দয়া করে ক্রেতার নাম, পরিমাণ এবং টাকার পরিমাণ সঠিকভাবে পূরণ করুন!");
-            return;
-        }
-
-        const fullQuantity = `${qtyNum} ${unit}`;
-        const now = new Date();
-        const fullDateTime = `${now.toLocaleDateString('bn-BD')}, ${now.toLocaleTimeString('bn-BD')}`;
-
-        const entryData = {
-            id: Date.now(),
-            customer: cName,
-            product: item,
-            quantity: fullQuantity,
-            price: amount,
-            datetime: fullDateTime
-        };
-
-        let ledger = JSON.parse(localStorage.getItem('grocery_ledger')) || [];
-        ledger.push(entryData);
-        localStorage.setItem('grocery_ledger', JSON.stringify(ledger));
-
-        document.getElementById('formArea').style.display = 'none';
-        document.getElementById('successBox').style.display = 'block';
-
-        document.getElementById('savedDetails').innerHTML = `
-            👤 ক্রেতা: <b>${cName}</b><br>
-            🛒 পণ্য: <b>${item}</b><br>
-            ⚖️ পরিমাণ: <b>${fullQuantity}</b><br>
-            💰 মোট টাকা: <b class="green-text">৳${amount}</b><br>
-            ⏰ সময়: <span style="font-size:12px;">${fullDateTime}</span>
-        `;
-    }
-
-    function resetForm() {
-        document.getElementById('successBox').style.display = 'none';
-        document.getElementById('formArea').style.display = 'block';
-        document.getElementById('customerName').value = "";
-        document.getElementById('itemQuantityNum').value = "";
-        document.getElementById('itemAmount').value = "";
-        calculateAutoPrice();
-    }
-
-    function openHistoryModal() {
-        verifyAndExecute(() => {
-            loadLedgerData();
-            document.getElementById('historyModal').style.display = 'flex';
-        });
-    }
-
-    function openSettingsModal() {
-        loadSettingsItemList();
-        updateBiometricButtonUI();
-        document.getElementById('warningMsgInput').value = getWarningMessage();
-        document.getElementById('settingsModal').style.display = 'flex';
-        document.getElementById('settingsPageSwitch').checked = false;
-        toggleSettingsPage(false);
-    }
-
-    function openCalculatorModal() {
-        loadCalcHistory();
-        document.getElementById('calculatorModal').style.display = 'flex';
-    }
-
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-
-    // ক্যালকুলেটর লজিক
-    let calcInputString = "";
-
-    function calcAppend(val) {
-        calcInputString += val;
-        document.getElementById('calcScreen').innerText = calcInputString;
-    }
-
-    function calcClear() {
-        calcInputString = "";
-        document.getElementById('calcScreen').innerText = "0";
-    }
-
-    function calcDelete() {
-        calcInputString = calcInputString.slice(0, -1);
-        document.getElementById('calcScreen').innerText = calcInputString === "" ? "0" : calcInputString;
-    }
-
-    function calcCalculate() {
-        if (!calcInputString) return;
-        try {
-            let sanitized = calcInputString.replace(/×/g, '*').replace(/÷/g, '/');
-            let result = eval(sanitized);
-            let expressionStr = `${calcInputString} = ${result}`;
+        function dragStart(e) {
+            isDragging = true;
+            hasMoved = false;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
             
-            document.getElementById('calcScreen').innerText = result;
-            document.getElementById('calcHistoryPreview').innerText = expressionStr;
-            
-            saveCalcHistoryEntry(expressionStr);
-            calcInputString = result.toString();
-        } catch (e) {
-            document.getElementById('calcScreen').innerText = "ত্রুটি";
-            calcInputString = "";
-        }
-    }
+            startX = clientX;
+            startY = clientY;
 
-    function saveCalcHistoryEntry(expr) {
-        let history = JSON.parse(localStorage.getItem('calc_separate_history')) || [];
-        history.push({ id: Date.now(), expr: expr, time: new Date().toLocaleTimeString('bn-BD') });
-        if (history.length > 25) history.shift();
-        localStorage.setItem('calc_separate_history', JSON.stringify(history));
-        loadCalcHistory();
-    }
+            const rect = container.getBoundingClientRect();
+            container.style.bottom = 'auto';
+            container.style.right = 'auto';
+            container.style.left = rect.left + 'px';
+            container.style.top = rect.top + 'px';
 
-    function loadCalcHistory() {
-        let history = JSON.parse(localStorage.getItem('calc_separate_history')) || [];
-        let container = document.getElementById('calcSavedHistoryList');
-        
-        if (history.length === 0) {
-            container.innerHTML = `<p style="color: #666;">কোনো হিসাব নেই।</p>`;
-            document.getElementById('calcHistoryPreview').innerText = "সর্বশেষ হিসাব দেখা যাবে";
-            return;
+            initialX = rect.left;
+            initialY = rect.top;
+
+            document.addEventListener('mousemove', dragMove);
+            document.addEventListener('mouseup', dragEnd);
+            document.addEventListener('touchmove', dragMove);
+            document.addEventListener('touchend', dragEnd);
         }
 
-        let lastItem = history[history.length - 1];
-        document.getElementById('calcHistoryPreview').innerText = lastItem.expr;
+        function dragMove(e) {
+            if (!isDragging) return;
+            hasMoved = true;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-        let html = "";
-        history.slice().reverse().forEach((item) => {
-            html += `<div style="padding: 6px 0; border-bottom: 1px solid #1a1a2e; color: #00ffcc; display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                    <input type="checkbox" class="calc-history-checkbox" value="${item.id}" style="width:14px; height:14px; cursor:pointer;">
-                    <span>${item.expr} <span style="font-size:10px; color:#888;">(${item.time})</span></span>
-                </div>
-                <button class="del-btn" style="padding: 2px 6px; font-size:10px;" onclick="verifyAndExecuteSingleCalc(${item.id})">ডিলিট</button>
-            </div>`;
-        });
-        container.innerHTML = html;
-    }
+            const dx = clientX - startX;
+            const dy = clientY - startY;
 
-    // নির্দিষ্ট একটি হিস্টরি আইটেম ডিলিট করার জন্য পাসওয়ার্ড ভেরিফিকেশন
-    function verifyAndExecuteSingleCalc(id) {
-        verifyAndExecute(() => {
-            let history = JSON.parse(localStorage.getItem('calc_separate_history')) || [];
-            history = history.filter(item => item.id !== id);
-            localStorage.setItem('calc_separate_history', JSON.stringify(history));
-            loadCalcHistory();
+            container.style.left = (initialX + dx) + 'px';
+            container.style.top = (initialY + dy) + 'px';
+        }
+
+        function dragEnd(e) {
+            isDragging = false;
+            document.removeEventListener('mousemove', dragMove);
+            document.removeEventListener('mouseup', dragEnd);
+            document.removeEventListener('touchmove', dragMove);
+            document.removeEventListener('touchend', dragEnd);
+        }
+
+        btn.addEventListener('mousedown', dragStart);
+        btn.addEventListener('touchstart', dragStart);
+
+        // ক্লিক বা ট্যাপ করলে পপআপ টেস্টিং
+        btn.addEventListener('click', (e) => {
+            if (!hasMoved) {
+                popup.classList.toggle('show');
+            }
         });
     }
 
-    // মার্ক করা হিস্টরি ডিলিট করা
-    function deleteSelectedCalcHistory() {
-        let checkboxes = document.querySelectorAll('.calc-history-checkbox:checked');
-        if (checkboxes.length === 0) {
-            alert("ডিলিট করার জন্য অন্তত একটি হিস্টরি মার্ক (টিক) করুন!");
-            return;
-        }
-        let idsToDelete = Array.from(checkboxes).map(cb => parseInt(cb.value));
-        let history = JSON.parse(localStorage.getItem('calc_separate_history')) || [];
-        history = history.filter(item => !idsToDelete.includes(item.id));
-        localStorage.setItem('calc_separate_history', JSON.stringify(history));
-        loadCalcHistory();
-        alert("মার্ক করা হিস্টরি সফলভাবে মুছে ফেলা হয়েছে!");
-    }
-
-    function clearAllCalcHistory() {
-        if(confirm("সত্যিই সব ক্যালকুলেটর হিস্টরি মুছে ফেলতে চান?")) {
-            localStorage.removeItem('calc_separate_history');
-            loadCalcHistory();
-            alert("সব ক্যালকুলেটর হিস্টরি মুছে ফেলা হয়েছে!");
+    function showPage(pageId) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if(pageId === 'homePage') renderMemberList();
+        if(pageId === 'settingsPage') {
+            updateDropdowns();
+            document.getElementById('fbLinkInput').value = APP_DATA.fbLink;
+            document.getElementById('ytLinkInput').value = APP_DATA.ytLink;
+            document.getElementById('ttLinkInput').value = APP_DATA.ttLink;
+            document.getElementById('admin1NameInput').value = APP_DATA.admin1Name;
+            document.getElementById('admin2NameInput').value = APP_DATA.admin2Name;
+            document.getElementById('admin1LinkInput').value = APP_DATA.admin1ChatLink;
+            document.getElementById('admin2LinkInput').value = APP_DATA.admin2ChatLink;
         }
     }
 
-    function changePassword() {
-        let oldP = document.getElementById('oldPass').value.trim();
-        let newP = document.getElementById('newPass').value.trim();
-
-        if (oldP !== getPassword()) {
-            alert("বর্তমান পাসওয়ার্ড ভুল রয়েছে!");
-            return;
+    function openSettingsGate() {
+        if (APP_DATA.isPasskeyEnabled) {
+            tryBiometricAuth(false);
+        } else {
+            showPage('settingsGatePage');
         }
-        if (!newP) {
-            alert("নতুন পাসওয়ার্ড খালি রাখা যাবে না!");
-            return;
-        }
-
-        localStorage.setItem('app_password', newP);
-        document.getElementById('oldPass').value = "";
-        document.getElementById('newPass').value = "";
-        alert("পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!");
     }
 
-    function toggleBiometric() {
+    async function tryBiometricAuth(fromGateButton = false) {
         if (!window.PublicKeyCredential) {
-            alert("আপনার ব্রাউজার বা ডিভাইস ফিঙ্গারপ্রিন্ট সিকিউরিটি সাপোর্ট করে না।");
+            alert("আপনার ডিভাইসে ফিঙ্গারপ্রিন্ট সাপোর্ট করে না!");
+            if(fromGateButton) showPage('settingsGatePage');
             return;
         }
-        let current = isBiometricEnabled();
-        localStorage.setItem('bio_enabled', !current);
-        updateBiometricButtonUI();
-        alert(current ? "ফিঙ্গারপ্রিন্ট সিকিউরিটি বন্ধ করা হয়েছে।" : "ফিঙ্গারপ্রিন্ট সিকিউরিটি সফলভাবে চালু করা হয়েছে!");
-    }
 
-    function updateBiometricButtonUI() {
-        const btn = document.getElementById('bioToggleBtn');
-        if (isBiometricEnabled()) {
-            btn.innerText = "ফিঙ্গারপ্রিন্ট লক বন্ধ করুন";
-            btn.style.background = "#ff0055";
-            btn.style.color = "#fff";
-        } else {
-            btn.innerText = "ফিঙ্গারপ্রিন্ট লক অন করুন";
-            btn.style.background = "var(--secondary-color)";
-            btn.style.color = "#05050a";
+        try {
+            const publicKey = {
+                challenge: new Uint8Array([21, 31, 105, 75, 23, 12, 88, 99]),
+                rp: { name: "Picnic Fund App" },
+                user: { id: new Uint8Array([1, 2, 3, 4]), name: "admin@picnic.com", displayName: "Admin" },
+                pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+                timeout: 60000,
+                authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" }
+            };
+
+            const credential = await navigator.credentials.get({ publicKey: { challenge: publicKey.challenge } });
+            if (credential) {
+                alert("✅ ফিঙ্গারপ্রিন্ট সফলভাবে ভেরিফাই হয়েছে!");
+                showPage('settingsPage');
+            }
+        } catch (err) {
+            alert("❌ ফিঙ্গারপ্রিন্ট ভেরিফিকেশন ব্যর্থ হয়েছে।");
+            if(fromGateButton) showPage('settingsGatePage');
         }
     }
 
-    function loadLedgerData() {
-        let ledger = JSON.parse(localStorage.getItem('grocery_ledger')) || [];
-        let container = document.getElementById('ledgerListContainer');
+    async function togglePasskey(enable) {
+        if (enable) {
+            APP_DATA.isPasskeyEnabled = true;
+            alert("✅ এই ডিভাইসের জন্য ফিঙ্গারপ্রিন্ট লক অন করা হয়েছে!");
+        } else {
+            APP_DATA.isPasskeyEnabled = false;
+            alert("🔓 ফিঙ্গারপ্রিন্ট লক বন্ধ করা হয়েছে।");
+        }
+    }
+
+    function verifySettingsPassword() {
+        const pass = document.getElementById('gatePassInput').value.trim();
+        if(pass === APP_DATA.generalPass) {
+            document.getElementById('gatePassInput').value = '';
+            showPage('settingsPage');
+        } else {
+            alert("❌ ভুল পাসওয়ার্ড!");
+        }
+    }
+
+    function saveSocialLinks() {
+        const n1 = document.getElementById('admin1NameInput').value.trim();
+        const n2 = document.getElementById('admin2NameInput').value.trim();
+        const fb = document.getElementById('fbLinkInput').value.trim();
+        const yt = document.getElementById('ytLinkInput').value.trim();
+        const tt = document.getElementById('ttLinkInput').value.trim();
+        const link1 = document.getElementById('admin1LinkInput').value.trim();
+        const link2 = document.getElementById('admin2LinkInput').value.trim();
+
+        if(n1) APP_DATA.admin1Name = n1;
+        if(n2) APP_DATA.admin2Name = n2;
+        if(fb) APP_DATA.fbLink = fb;
+        if(yt) APP_DATA.ytLink = yt;
+        if(tt) APP_DATA.ttLink = tt;
+        if(link1) APP_DATA.admin1ChatLink = link1;
+        if(link2) APP_DATA.admin2ChatLink = link2;
+
+        applyLinks();
+        alert("✅ চ্যাট বক্স ও সোশ্যাল লিংক সফলভাবে সেভ করা হয়েছে!");
+    }
+
+    function updateDropdowns() {
+        const delSelect = document.getElementById('deleteMemberSelect');
+        const editSelect = document.getElementById('editMemberSelect');
         
-        if (ledger.length === 0) {
-            container.innerHTML = `<p style="color: #888; font-size: 13px;">হিসাব খাতা খালি।</p>`;
+        delSelect.innerHTML = '';
+        editSelect.innerHTML = '';
+        
+        if(APP_DATA.members.length === 0) {
+            delSelect.innerHTML = '<option value="">কোনো সদস্য নেই</option>';
+            editSelect.innerHTML = '<option value="">কোনো সদস্য নেই</option>';
             return;
         }
 
-        let html = `<p style="color: var(--secondary-color); font-size: 12px; margin-bottom: 10px;">মোট এন্ট্রি: <b>${ledger.length}</b> টি</p>`;
-        ledger.reverse().forEach((item) => {
-            html += `
-                <div class="ledger-item">
-                    <button class="del-btn" onclick="deleteLedgerItem(${item.id})">ডিলিট</button>
-                    👤 <b>${item.customer}</b><br>
-                    🛒 <b>${item.product}</b> (${item.quantity})<br>
-                    💰 টাকা: <b style="color:var(--theme-color);">৳${item.price}</b><br>
-                    <span style="font-size:11px; color:#aaa;">⏰ ${item.datetime}</span>
-                </div>`;
+        APP_DATA.members.forEach(m => {
+            const opt1 = document.createElement('option');
+            opt1.value = m.id;
+            opt1.innerText = m.name;
+            delSelect.appendChild(opt1);
+
+            const opt2 = document.createElement('option');
+            opt2.value = m.id;
+            opt2.innerText = m.name;
+            editSelect.appendChild(opt2);
         });
-        container.innerHTML = html;
+        loadMemberNameForEdit();
     }
 
-    function deleteLedgerItem(id) {
-        verifyAndExecute(() => {
-            let ledger = JSON.parse(localStorage.getItem('grocery_ledger')) || [];
-            ledger = ledger.filter(item => item.id !== id);
-            localStorage.setItem('grocery_ledger', JSON.stringify(ledger));
-            loadLedgerData();
-            alert("হিসাবটি সফলভাবে মুছে ফেলা হয়েছে!");
-        });
-    }
-
-    function clearAllLedger() {
-        if(confirm("সত্যিই সব হিস্টরি মুছে ফেলতে চান?")) {
-            localStorage.removeItem('grocery_ledger');
-            loadLedgerData();
-            alert("সব হিস্টরি মুছে ফেলা হয়েছে!");
+    function loadMemberNameForEdit() {
+        const editSelect = document.getElementById('editMemberSelect');
+        const memberId = parseInt(editSelect.value);
+        const member = APP_DATA.members.find(m => m.id === memberId);
+        if(member) {
+            document.getElementById('updatedMemberNameInput').value = member.name;
         }
     }
 
-    function addNewItemWithPrice() {
-        let name = document.getElementById('newItemName').value.trim();
-        let price = parseFloat(document.getElementById('newItemPrice').value);
-        let unit = document.getElementById('newItemUnit').value;
+    function updateMemberName() {
+        const editSelect = document.getElementById('editMemberSelect');
+        const memberId = parseInt(editSelect.value);
+        const newName = document.getElementById('updatedMemberNameInput').value.trim();
 
-        if(!name || isNaN(price)) {
-            alert("পণ্যের নাম এবং সঠিক দাম লিখুন!");
+        if(!memberId || !newName) {
+            alert("সঠিক তথ্য দিন!");
             return;
         }
 
-        let inventory = getInventory();
-        inventory[name] = { price: price, unit: unit };
-        localStorage.setItem('grocery_inventory_v2', JSON.stringify(inventory));
-
-        document.getElementById('newItemName').value = "";
-        document.getElementById('newItemPrice').value = "";
-        populateItemsDropdown();
-        loadSettingsItemList();
-        alert("পণ্য, দাম ও একক সফলভাবে সেভ হয়েছে!");
-    }
-
-    function loadSettingsItemList() {
-        let inventory = getInventory();
-        let container = document.getElementById('itemListContainer');
-        let html = "";
-        for (let item in inventory) {
-            let itemData = inventory[item];
-            html += `<div style="background:#111; padding:8px; border-radius:6px; margin-bottom:8px; border:1px solid #333;">
-                <div style="font-size: 13px; font-weight:bold; margin-bottom:5px; color:var(--secondary-color);">• ${item}</div>
-                <div style="display:flex; gap:6px; align-items:center;">
-                    <input type="number" value="${itemData.price}" style="width: 75px; padding: 4px; text-align: center; font-size: 13px;" placeholder="দাম" onchange="verifyAndExecuteForUpdateItem('${item.replace(/'/g, "\\'")}', this.value, null, this)">
-                    <select style="flex:1; padding:4px; font-size:12px;" onchange="verifyAndExecuteForUpdateItem('${item.replace(/'/g, "\\'")}', null, this.value, this)">
-                        <option value="কেজি (Kg)" ${itemData.unit.includes('কেজি')?'selected':''}>কেজি (Kg)</option>
-                        <option value="গ্রাম (Gram)" ${itemData.unit.includes('গ্রাম')?'selected':''}>গ্রাম (Gram)</option>
-                        <option value="পোয়া (Poa)" ${itemData.unit.includes('পোয়া')?'selected':''}>পোয়া</option>
-                        <option value="হালি (Hali)" ${itemData.unit.includes('হালি')?'selected':''}>হালি (Hali)</option>
-                        <option value="ডজন (Dozen)" ${itemData.unit.includes('ডজন')?'selected':''}>ডজন (Dozen)</option>
-                        <option value="পিস (Piece)" ${itemData.unit.includes('পিস')?'selected':''}>পিস (Piece)</option>
-                        <option value="আটি (Bunch)" ${itemData.unit.includes('আটি')?'selected':''}>আটি (Bunch)</option>
-                    </select>
-                    <button style="background:var(--theme-color); color:#fff; border:none; padding:5px 8px; font-size:10px; border-radius:3px; cursor:pointer;" onclick="deleteInventoryItem('${item.replace(/'/g, "\\'")}')">রিমুভ</button>
-                </div>
-            </div>`;
+        const member = APP_DATA.members.find(m => m.id === memberId);
+        if(member) {
+            member.name = newName;
+            updateDropdowns();
+            renderMemberList();
+            alert("✅ সদস্যের নাম সফলভাবে আপডেট করা হয়েছে!");
         }
-        container.innerHTML = html;
     }
 
-    async function verifyAndExecuteForUpdateItem(itemKey, newPriceVal, newUnitVal, element) {
-        let success = false;
-        let warningText = getWarningMessage();
-        let warningConfirmed = confirm("=====================================\n" + warningText + "\n=====================================\n\n'OK' বাটনে ক্লিক করে পাসওয়ার্ড/ফিঙ্গারপ্রিন্ট ভেরিফিকেশন সম্পন্ন করুন।");
-        if (!warningConfirmed) {
-            loadSettingsItemList();
+    function addNewMember() {
+        const name = document.getElementById('newMemberNameInput').value.trim();
+        if(!name) {
+            alert("সদস্যের নাম লিখুন!");
             return;
         }
 
-        if (isBiometricEnabled() && window.PublicKeyCredential) {
-            try {
-                const publicKey = {
-                    challenge: new Uint8Array([21, 31, 105, 75, 20]),
-                    rp: { name: "Chudir Bhai Grocery" },
-                    user: { id: new Uint8Array([1]), name: "shopkeeper", displayName: "Shop Owner" },
-                    pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-                    timeout: 60000,
-                    authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-                    attestation: "none"
-                };
-                await navigator.credentials.create({ publicKey });
-                success = true;
-            } catch (err) {
-                console.log("বায়োমেট্রিক স্কিপ করা হয়েছে।");
-            }
-        }
+        const newId = Date.now();
+        APP_DATA.members.push({ id: newId, name: name, history: [] });
+        document.getElementById('newMemberNameInput').value = '';
+        updateDropdowns();
+        alert(`✅ "${name}" সফলভাবে যুক্ত হয়েছে!`);
+    }
 
-        if (!success) {
-            let pass = prompt("সিকিউরিটি পাসওয়ার্ড দিন:");
-            if (pass === getPassword()) {
-                success = true;
-            } else if (pass !== null) {
-                alert("ভুল পাসওয়ার্ড!");
-            }
+    function deleteSelectedMember() {
+        const select = document.getElementById('deleteMemberSelect');
+        const memberId = parseInt(select.value);
+        if(!memberId) {
+            alert("কোনো সদস্য সিলেক্ট করা নেই!");
+            return;
         }
-
-        if (success) {
-            let inventory = getInventory();
-            if (!inventory[itemKey]) return;
-            if (newPriceVal !== null) {
-                let price = parseFloat(newPriceVal);
-                if (isNaN(price) || price < 0) {
-                    alert("সঠিক দাম লিখুন!");
-                    loadSettingsItemList();
-                    return;
-                }
-                inventory[itemKey].price = price;
-            }
-            if (newUnitVal !== null) {
-                inventory[itemKey].unit = newUnitVal;
-            }
-            localStorage.setItem('grocery_inventory_v2', JSON.stringify(inventory));
-            populateItemsDropdown();
-            alert("পণ্যের দাম ও একক সফলভাবে আপডেট হয়েছে!");
-        } else {
-            loadSettingsItemList();
+        if(confirm("আপনি কি নিশ্চিতভাবে এই সদস্যকে ডিলিট করতে চান?")) {
+            APP_DATA.members = APP_DATA.members.filter(m => m.id !== memberId);
+            updateDropdowns();
+            alert("🗑️ সদস্য সফলভাবে ডিলিট করা হয়েছে!");
         }
     }
 
-    function deleteInventoryItem(itemKey) {
-        verifyAndExecute(() => {
-            let inventory = getInventory();
-            delete inventory[itemKey];
-            localStorage.setItem('grocery_inventory_v2', JSON.stringify(inventory));
-            populateItemsDropdown();
-            loadSettingsItemList();
-            alert("পণ্যটি সফলভাবে রিমুভ করা হয়েছে!");
+    function verifyAndAddMoney() {
+        const pass = prompt("টাকা জমা দিতে পাসওয়ার্ড দিন (1234):");
+        if(pass !== APP_DATA.generalPass) {
+            alert("❌ ভুল পাসওয়ার্ড!");
+            return;
+        }
+
+        const amt = parseFloat(document.getElementById('moneyInput').value);
+        if(isNaN(amt) || amt <= 0) {
+            alert("সঠিক টাকার পরিমাণ লিখুন!");
+            return;
+        }
+
+        const member = APP_DATA.members.find(m => m.id === activeMemberId);
+        if(member) {
+            const currentDate = new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+            member.history.push({ id: Date.now(), amount: amt, dateTime: currentDate });
+            document.getElementById('moneyInput').value = '';
+            renderMemberDetail();
+            alert("✅ সফলভাবে টাকা জমা হয়েছে!");
+        }
+    }
+
+    function copyAndSendMessenger() {
+        const textVal = document.getElementById('inputNewMember').value.trim();
+        let scriptContent = document.querySelector('script').innerHTML;
+        let currentCodeHtml = `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পিকনিক ফান্ডের হিসাব</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ${document.querySelector('style').innerHTML}
+    </style>
+</head>
+<body>
+${document.querySelector('.card').outerHTML}
+<div class="floating-chat-container" id="draggableChat">
+    <div class="floating-popup" id="floatingPopup">
+        <div class="popup-title">💬 সরাসরি যোগাযোগ করুন</div>
+        <a href="${APP_DATA.admin1ChatLink}" id="floatingAdmin1" target="_blank" class="popup-link-btn"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin1">${APP_DATA.admin1Name}</span></a>
+        <a href="${APP_DATA.admin2ChatLink}" id="floatingAdmin2" target="_blank" class="popup-link-btn" style="background: #0084ff;"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin2">${APP_DATA.admin2Name}</span></a>
+    </div>
+    <div class="floating-btn" id="floatingBtn">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+</div>
+<script>
+    const APP_DATA = ${JSON.stringify(APP_DATA, null, 4)};
+    ${scriptContent.substring(scriptContent.indexOf("let activeMemberId"))}
+<\/script>
+</body>
+</html>`;
+
+        if(textVal) {
+            currentCodeHtml = `<!-- আপডেট নোট: ${textVal} -->\n` + currentCodeHtml;
+        }
+
+        navigator.clipboard.writeText(currentCodeHtml).then(() => {
+            alert("✅ আপডেট কোড কপি হয়েছে!");
+            window.location.href = APP_DATA.messengerLink;
+        }).catch(err => {
+            alert("কপি করতে সমস্যা হয়েছে।");
         });
+    }
+
+    function verifyAndGoGithub() {
+        const pass = prompt("গিটহাবে যাওয়ার জন্য পাসওয়ার্ড দিন (9999):");
+        if(pass !== APP_DATA.githubPass) {
+            alert("❌ ভুল পাসওয়ার্ড!");
+            return;
+        }
+        window.open(APP_DATA.githubRepoLink, '_blank');
+    }
+
+    function setTheme(borderC, highlightC) {
+        document.documentElement.style.setProperty('--border-color', borderC);
+        document.documentElement.style.setProperty('--highlight-color', highlightC);
+    }
+
+    function saveNewPasswords() {
+        const genP = document.getElementById('newGeneralPass').value.trim();
+        const gitP = document.getElementById('newGithubPass').value.trim();
+        if(genP) APP_DATA.generalPass = genP;
+        if(gitP) APP_DATA.githubPass = gitP;
+        document.getElementById('newGeneralPass').value = '';
+        document.getElementById('newGithubPass').value = '';
+        alert("✅ পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে!");
+        showPage('homePage');
+    }
+
+    function renderMemberList() {
+        const listEl = document.getElementById('memberList');
+        const grandTotalEl = document.getElementById('grandTotalDisplay');
+        listEl.innerHTML = '';
+        let grandTotal = 0;
+
+        APP_DATA.members.forEach(member => {
+            const memberTotal = member.history.reduce((sum, item) => sum + item.amount, 0);
+            grandTotal += memberTotal;
+
+            const li = document.createElement('li');
+            li.className = 'member-card';
+            li.onclick = () => {
+                activeMemberId = member.id;
+                showPage('detailPage');
+                renderMemberDetail();
+            };
+            li.innerHTML = `
+                <span class="member-info-name">👤 ${member.name}</span>
+                <span class="member-info-total">৳ ${memberTotal}</span>
+            `;
+            listEl.appendChild(li);
+        });
+
+        grandTotalEl.innerText = `সর্বমোট জমা: ৳ ${grandTotal}`;
+        document.getElementById('displayAppTitle').innerText = APP_DATA.appTitle;
+    }
+
+    function renderMemberDetail() {
+        const member = APP_DATA.members.find(m => m.id === activeMemberId);
+        if (!member) return;
+
+        document.getElementById('currentMemberName').innerText = `👤 ${member.name}`;
+        const total = member.history.reduce((sum, item) => sum + item.amount, 0);
+        document.getElementById('currentMemberTotal').innerText = `মোট জমা: ৳ ${total}`;
+
+        const historyListEl = document.getElementById('memberHistoryList');
+        historyListEl.innerHTML = '';
+
+        if(member.history.length === 0) {
+            historyListEl.innerHTML = '<div style="text-align:center; color:#777; font-size:0.85rem;">কোনো হিস্ট্রি নেই।</div>';
+            return;
+        }
+
+        member.history.forEach((item) => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.innerHTML = `
+                <div style="color: #fff; font-weight: bold;">+ ৳ ${item.amount}</div>
+                <div class="history-date"><i class="far fa-calendar-alt"></i> ${item.dateTime}</div>
+            `;
+            historyListEl.appendChild(div);
+        });
+    }
+
+    function applyLinks() {
+        document.getElementById('fbLink').href = APP_DATA.fbLink;
+        document.getElementById('ytLink').href = APP_DATA.ytLink;
+        document.getElementById('ttLink').href = APP_DATA.ttLink;
+        document.getElementById('floatingAdmin1').href = APP_DATA.admin1ChatLink;
+        document.getElementById('floatingAdmin2').href = APP_DATA.admin2ChatLink;
+        document.getElementById('labelAdmin1').innerText = APP_DATA.admin1Name;
+        document.getElementById('labelAdmin2').innerText = APP_DATA.admin2Name;
     }
 </script>
 
 </body>
-  </html>
+</html>
