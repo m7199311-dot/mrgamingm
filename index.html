@@ -6,6 +6,7 @@
     <title>পিকনিক ফান্ডের হিসাব</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        
         :root {
             --bg-color: #050505;
             --card-bg: #0a0a0c;
@@ -311,10 +312,10 @@
 
         .view { display: none; }
         .view.active { display: block; }
+    
     </style>
 </head>
 <body>
-
 <div class="card">
     <div class="top-bar">
         <div class="app-title" id="displayAppTitle">🌸 পিকনিক ফান্ডের হিসাব 🌸</div>
@@ -322,14 +323,14 @@
     </div>
 
     <!-- হোম পেজ -->
-    <div id="homePage" class="view active">
-        <div class="grand-total" id="grandTotalDisplay">সর্বমোট জমা: ৳ ০</div>
+    <div id="homePage" class="view">
+        <div class="grand-total" id="grandTotalDisplay">সর্বমোট জমা: ৳ 0</div>
         <ul class="member-list" id="memberList"></ul>
 
         <div class="social-footer">
-            <a href="#" id="fbLink" target="_blank" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" id="ytLink" target="_blank" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
-            <a href="#" id="ttLink" target="_blank" class="social-icon tiktok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://facebook.com" id="fbLink" target="_blank" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://youtube.com" id="ytLink" target="_blank" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://tiktok.com" id="ttLink" target="_blank" class="social-icon tiktok"><i class="fab fa-tiktok"></i></a>
         </div>
     </div>
 
@@ -363,7 +364,7 @@
     </div>
 
     <!-- আসল সেটিংস পেজ -->
-    <div id="settingsPage" class="view">
+    <div id="settingsPage" class="view active">
         <button class="back-btn" onclick="showPage('homePage')">⬅ পেছনে যান</button>
         <h3 style="color: var(--accent-color); margin-bottom: 15px;">⚙ সেটিংস ও ম্যানেজমেন্ট</h3>
 
@@ -409,8 +410,7 @@
             <h4 style="color: var(--accent-color); margin-bottom: 10px; font-size: 0.95rem;">✏️ সদস্যের নাম কাস্টমাইজ (এডিট)</h4>
             <div class="input-group">
                 <label class="input-label">সদস্য সিলেক্ট করুন:</label>
-                <select id="editMemberSelect" class="input-field" style="background:#000; color:#fff; padding:10px;" onchange="loadMemberNameForEdit()">
-                </select>
+                <select id="editMemberSelect" class="input-field" style="background:#000; color:#fff; padding:10px;" onchange="loadMemberNameForEdit()"><option value="">কোনো সদস্য নেই</option></select>
             </div>
             <div class="input-group">
                 <label class="input-label">নতুন নাম লিখুন:</label>
@@ -439,8 +439,7 @@
 
             <div class="input-group">
                 <label class="input-label">ডিলিট করার জন্য সদস্য সিলেক্ট করুন:</label>
-                <select id="deleteMemberSelect" class="input-field" style="background:#000; color:#fff; padding:10px;">
-                </select>
+                <select id="deleteMemberSelect" class="input-field" style="background:#000; color:#fff; padding:10px;"><option value="">কোনো সদস্য নেই</option></select>
             </div>
             <button class="action-btn" onclick="deleteSelectedMember()" style="background: #ff0055; color: #fff;">[ 🗑️ সদস্য ডিলিট করুন ]</button>
         </div>
@@ -481,46 +480,33 @@
         </div>
     </div>
 </div>
-
-<!-- ফ্লোটিং ড্র্যাগএবল চ্যাট বক্স -->
 <div class="floating-chat-container" id="draggableChat">
     <div class="floating-popup" id="floatingPopup">
         <div class="popup-title">💬 সরাসরি যোগাযোগ করুন</div>
-        <a href="#" id="floatingAdmin1" target="_blank" class="popup-link-btn"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin1">আমার সাথে চ্যাট</span></a>
-        <a href="#" id="floatingAdmin2" target="_blank" class="popup-link-btn" style="background: #0084ff;"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin2">বন্ধুর সাথে চ্যাট</span></a>
+        <a href="https://m.me/md.musa.khan.122549" id="floatingAdmin1" target="_blank" class="popup-link-btn"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin1">Md Musa Khan</span></a>
+        <a href="https://m.me/" id="floatingAdmin2" target="_blank" class="popup-link-btn" style="background: #0084ff;"><i class="fab fa-facebook-messenger"></i> <span id="labelAdmin2">Md Hasan Khan</span></a>
     </div>
     <div class="floating-btn" id="floatingBtn">
         <i class="fas fa-comment-dots"></i>
     </div>
 </div>
-
 <script>
-    // লোকাল স্টোরেজ থেকে ডেটা লোড করার সিস্টেম
-    let APP_DATA = JSON.parse(localStorage.getItem('picnic_app_data')) || {
-        appTitle: "🌸 পিকনিক ফান্ডের হিসাব 🌸",
-        generalPass: "1234",   
-        githubPass: "9999",    
-        isPasskeyEnabled: false,
-        admin1Name: "আমার সাথে চ্যাট",
-        admin2Name: "বন্ধুর সাথে চ্যাট",
-        admin1ChatLink: "https://m.me/md.musa.khan.122549",
-        admin2ChatLink: "https://m.me/",
-        messengerLink: "https://m.me/md.musa.khan.122549",
-        githubRepoLink: "https://github.com",
-        fbLink: "https://facebook.com",
-        ytLink: "https://youtube.com",
-        ttLink: "https://tiktok.com",
-        members: [
-            {
-                id: 1,
-                name: "Md Musa Khan",
-                history: [
-                    { id: 101, amount: 500, dateTime: "১ জুন ২০২৬" }
-                ]
-            }
-        ]
-    };
-
+    const APP_DATA = {
+    "appTitle": "🌸 পিকনিক ফান্ডের হিসাব 🌸",
+    "generalPass": "1234",
+    "githubPass": "9999",
+    "isPasskeyEnabled": false,
+    "admin1Name": "Md Musa Khan",
+    "admin2Name": "Md Hasan Khan",
+    "admin1ChatLink": "https://m.me/md.musa.khan.122549",
+    "admin2ChatLink": "https://m.me/",
+    "messengerLink": "https://m.me/md.musa.khan.122549",
+    "githubRepoLink": "https://github.com",
+    "fbLink": "https://facebook.com",
+    "ytLink": "https://youtube.com",
+    "ttLink": "https://tiktok.com",
+    "members": []
+};
     function saveAppData() {
         localStorage.setItem('picnic_app_data', JSON.stringify(APP_DATA));
     }
@@ -938,7 +924,7 @@ ${document.querySelector('.card').outerHTML}
         document.getElementById('labelAdmin1').innerText = APP_DATA.admin1Name;
         document.getElementById('labelAdmin2').innerText = APP_DATA.admin2Name;
     }
-</script>
 
+</script>
 </body>
-</html>
+                </html>
